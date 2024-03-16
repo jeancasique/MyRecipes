@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">My recipes</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="quantity">quantity</string>
+    <string name="ingredient">ingredient</string>
+    <string name="search">search</string>
+    <string name="change_view">change view</string>
+    <string name="image">image</string>
+    <string name="category">Category</string>
+    <string name="category_image">category image</string>
+    <string name="add">add</string>
+</resources>

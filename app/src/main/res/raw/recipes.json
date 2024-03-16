@@ -1,0 +1,66 @@
+{
+  "recipes": [
+    {
+      "title": "Title 1",
+      "image": "url 1",
+      "ingredients": [
+        {
+          "quantity": "first quantity 1",
+          "ingredient": "second ingredient 1"
+        },
+        {
+          "quantity": "second quantity 1",
+          "ingredient": "second ingredient 1"
+        }
+      ],
+      "categories": [
+        "vegetables",
+        "meat",
+        "bakery"
+      ],
+      "instructions": "big instructions for recipe 1",
+      "favorite": false
+    },
+    {
+      "title": "Title 2",
+      "image": "url 2",
+      "ingredients": [
+        {
+          "quantity": "first quantity 2",
+          "ingredient": "second ingredient 2"
+        },
+        {
+          "quantity": "second quantity 2",
+          "ingredient": "second ingredient 2"
+        }
+      ],
+      "categories": [
+        "meat",
+        "bakery"
+      ],
+      "instructions": "big instructions for recipe 2",
+      "favorite": false
+    },
+    {
+      "title": "Title 3",
+      "image": "url 3",
+      "ingredients": [
+        {
+          "quantity": "first quantity 3",
+          "ingredient": "second ingredient 3"
+        },
+        {
+          "quantity": "second quantity 3",
+          "ingredient": "second ingredient 3"
+        }
+      ],
+      "categories": [
+        "vegetables",
+        "meat",
+        "bakery"
+      ],
+      "instructions": "big instructions for recipe 3",
+      "favorite": true
+    }
+  ]
+}
