@@ -12,7 +12,7 @@ open class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
     companion object {
         private const val DATABASE_VERSION = 1
         private const val DATABASE_NAME = "TaskDB"
-        const val TABLE_TASKS = "tasks"
+        const val TABLE_RECIPE = "recipe"
         const val COLUMN_ID = "id"
         const val COLUMN_TITLE = "title"
         const val COLUMN_COMPLETED = "completed"
@@ -20,7 +20,7 @@ open class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
 
     override fun onCreate(db: SQLiteDatabase) {
         val createTableQuery = """
-            CREATE TABLE $TABLE_TASKS (
+            CREATE TABLE $TABLE_RECIPE (
                 $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
                 $COLUMN_TITLE TEXT,
                 $COLUMN_COMPLETED INTEGER DEFAULT 0) 
@@ -30,7 +30,7 @@ open class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_TASKS")
+        db.execSQL("DROP TABLE IF EXISTS $TABLE_RECIPE")
         onCreate(db)
     }
 
@@ -41,7 +41,7 @@ open class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE
             put(COLUMN_COMPLETED, if (recipe.completed) 1 else 0)
         }
         db.use {
-            it.insert(TABLE_TASKS, null, values)
+            it.insert(TABLE_RECIPE, null, values)
         }
     }
 }
