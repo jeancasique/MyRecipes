@@ -2,46 +2,81 @@ package com.example.myrecipes.data
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.myrecipes.model.Recipe
 
-
-open class DataBaseHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
-
-    companion object {
-        private const val DATABASE_VERSION = 1
-        private const val DATABASE_NAME = "TaskDB"
-        const val TABLE_RECIPE = "recipe"
-        const val COLUMN_ID = "id"
-        const val COLUMN_TITLE = "title"
-        const val COLUMN_COMPLETED = "completed"
-    }
+class DataBaseHelper(context: Context?) :
+    SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
 
     override fun onCreate(db: SQLiteDatabase) {
-        val createTableQuery = """
-            CREATE TABLE $TABLE_RECIPE (
-                $COLUMN_ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                $COLUMN_TITLE TEXT,
-                $COLUMN_COMPLETED INTEGER DEFAULT 0) 
-        """.trimIndent()
-
-        db.execSQL(createTableQuery)
+        // Crear la tabla "Recetas"
+        db.execSQL(
+            "CREATE TABLE IF NOT EXISTS Recetas (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "imagen TEXT," +
+                    "descripcion TEXT," +
+                    "categoria TEXT," +
+                    "favorito INTEGER," +
+                    "instrucciones TEXT," +
+                    "categorias_crudas TEXT" +
+                    ")"
+        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase, oldVersion: Int, newVersion: Int) {
-        db.execSQL("DROP TABLE IF EXISTS $TABLE_RECIPE")
-        onCreate(db)
+        // Implementar la lógica para actualizar la base de datos en caso de cambios en la estructura
     }
 
-    fun insertRecipe(recipe: Recipe) {
+    // Método para insertar una nueva receta
+    fun insertarReceta(imagen: String?, descripcion: String?, categoria: String?, favorito: Boolean, instrucciones: List<String>, categoriasCrudas: List<String>): Long {
         val db = writableDatabase
-        val values = ContentValues().apply {
-            put(COLUMN_TITLE, recipe.title)
-            put(COLUMN_COMPLETED, if (recipe.completed) 1 else 0)
-        }
-        db.use {
-            it.insert(TABLE_RECIPE, null, values)
-        }
+        val values = ContentValues()
+        values.put("imagen", imagen)
+        values.put("descripcion", descripcion)
+        values.put("categoria", categoria)
+        values.put("favorito", favorito)
+        values.put("instrucciones", instrucciones.joinToString(","))
+        values.put("categorias_crudas", categoriasCrudas.joinToString(","))
+        return db.insert("Recetas", null, values)
+    }
+
+    // Método para obtener todas las recetas
+    fun obtenerTodasRecetas(): Cursor {
+        val db = readableDatabase
+        return db.rawQuery("SELECT * FROM Recetas", null)
+    }
+
+    // Método para obtener una receta por su ID
+    fun obtenerRecetaPorId(id: Int): Cursor {
+        val db = readableDatabase
+        val args = arrayOf(id.toString())
+        return db.rawQuery("SELECT * FROM Recetas WHERE id=?", args)
+    }
+
+    // Método para actualizar una receta
+    fun actualizarReceta(id: Int, imagen: String?, descripcion: String?, categoria: String?, favorito: Boolean, instrucciones: List<String>, categoriasCrudas: List<String>): Int {
+        val db = writableDatabase
+        val values = ContentValues()
+        values.put("imagen", imagen)
+        values.put("descripcion", descripcion)
+        values.put("categoria", categoria)
+        values.put("favorito", favorito)
+        values.put("instrucciones", instrucciones.joinToString(","))
+        values.put("categorias_crudas", categoriasCrudas.joinToString(","))
+        val args = arrayOf(id.toString())
+        return db.update("Recetas", values, "id=?", args)
+    }
+
+    // Método para eliminar una receta
+    fun eliminarReceta(id: Int): Int {
+        val db = writableDatabase
+        val args = arrayOf(id.toString())
+        return db.delete("Recetas", "id=?", args)
+    }
+
+    companion object {
+        const val DATABASE_VERSION = 1
+        const val DATABASE_NAME = "MyRecipes.db"
     }
 }
